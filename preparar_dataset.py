@@ -2,6 +2,10 @@
 import pandas as pd
 import numpy as np
 
+
+'''Nossa janela é 1 de maio de 2008 a 31 de outubro de 2009
+'''
+
 # ==================================================
 # 1. CONFIGURAÇÕES
 # ==================================================
