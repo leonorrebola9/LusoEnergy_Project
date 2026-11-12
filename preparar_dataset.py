@@ -10,6 +10,7 @@ import numpy as np
 # 1. CONFIGURAÇÕES
 # ==================================================
 
+
 SEED_GRUPO = 107335
 
 FICHEIRO_ORIGINAL = "household_power_consumption.txt"
