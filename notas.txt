@@ -1,0 +1,16 @@
+Dataset original:
+Intuito: regista o consumo elétrico de uma única casa em Sceaux, perto de Paris, em França
+
+Colunas: 
+Date: Data, no formato dd/mm/aaaa
+Time: Hora, no formato hh:mm:ss	
+Global_active_power: Potência ativa média do agregado doméstico, no minuto em kW (Esta é mais importante)
+Global_reactive_power: Potência reativa média do agregado, no minuto em kVAr
+Voltage: Tensão média no minuto	V
+Global_intensity: Intensidade de corrente média no minuto em A
+Sub_metering_1:	Cozinha: sobretudo máquina de lavar loiça, forno e micro-ondas em Wh
+Sub_metering_2:	Lavandaria: máquina de lavar roupa, secador, frigorífico e iluminação em Wh
+Sub_metering_3: Esquentador/termoacumulador elétrico e ar condicionado em Wh
+
+
+**Janela do grupo:** 2008-05-01 a 2009-11-01

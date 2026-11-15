@@ -19,6 +19,10 @@ CSV_PADRAO = Path(__file__).resolve().parent.parent / "data" / "consumption.csv"
 # Dicionario de dados (escala de Stevens, unidades, dtypes)
 # --------------------------------------------------------------------------
 DICIONARIO_DADOS = {
+    "datetime": {
+    "dtype": "datetime64[ns]", "unidade": "minuto", "escala": "intervalo",
+    "nota": "Junção de Date e Time (dd/mm/aaaa), usada como índice. Resolução de 1 minuto; o zero do calendário é arbitrário, por isso não há razões.",
+    },
     "Global_active_power": {
         "dtype": "float64", "unidade": "kW", "escala": "razao",
         "nota": "Potencia ativa media do minuto. Nao pode ser negativa.",
@@ -48,8 +52,8 @@ DICIONARIO_DADOS = {
         "nota": "Aquecedor de agua e ar condicionado.",
     },
 }
-COLUNAS = list(DICIONARIO_DADOS)
-DTYPES = {c: d["dtype"] for c, d in DICIONARIO_DADOS.items()}
+COLUNAS = [c for c in DICIONARIO_DADOS if c != "datetime"]
+DTYPES = {c: DICIONARIO_DADOS[c]["dtype"] for c in COLUNAS}
 
 
 # --------------------------------------------------------------------------
