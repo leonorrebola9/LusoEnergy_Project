@@ -160,4 +160,14 @@ def dias_validos(df, max_frac_missing=0.1, coluna="Global_active_power"):
     """Datas cuja fracao de missing e <= max_frac_missing (para agregacoes diarias)."""
     f = missing_por_dia(df, coluna)
     return f[f <= max_frac_missing].index
-    
+
+
+# no utils.py, logo a seguir ao CSV_PADRAO
+PASTA_FIGURAS = Path(__file__).resolve().parent.parent / "figures"
+
+
+def guardar_figura(fig, parte, nome, dpi=150):
+    """Guarda a figura em <raiz do projeto>/figures/<parte>/<nome>.png, criando a pasta se não existir."""
+    pasta = PASTA_FIGURAS / parte
+    pasta.mkdir(parents=True, exist_ok=True)
+    fig.savefig(pasta / f"{nome}.png", dpi=dpi, bbox_inches="tight", facecolor="white")
