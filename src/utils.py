@@ -1,11 +1,11 @@
 """
-utils.py - funcoes partilhadas pelos notebooks do projeto LusoEnergia.
+utils.py - funcoes partilhadas pelos notebooks do projeto.
 
     from utils import carregar_dados, tratar_missing, dias_validos
 
-Contem apenas o que e reutilizado em varias partes: carregamento e validacao dos
+Contem apenas o que e reutilizado em varias partes: carregamento e validação dos
 dados, grelha temporal ao minuto, tratamento de valores em falta e selecao de dias
-validos. O que e especifico de uma parte fica no respetivo notebook.
+validos. O que é especifico de uma parte fica no respetivo notebook.
 """
 from pathlib import Path
 
@@ -160,3 +160,4 @@ def dias_validos(df, max_frac_missing=0.1, coluna="Global_active_power"):
     """Datas cuja fracao de missing e <= max_frac_missing (para agregacoes diarias)."""
     f = missing_por_dia(df, coluna)
     return f[f <= max_frac_missing].index
+    
