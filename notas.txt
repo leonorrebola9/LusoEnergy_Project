@@ -16,6 +16,7 @@ Sub_metering_3: Esquentador/termoacumulador elétrico e ar condicionado em Wh
 **Janela do grupo:** 2008-05-01 a 2009-11-01
 
 
+
 MAD (Median Absolute Deviation) Escalado: Calcula a mediana dos desvios absolutos em relação à mediana dos dados. 
 O termo "escalado" refere-se à multiplicação por uma constante (tipicamente $1.4826$ no caso de dados com distribuição normal) 
 para que o valor seja diretamente comparável ao desvio-padrão.
@@ -29,3 +30,6 @@ Curtose (Excesso) [Excess Kurtosis]: Mede o "peso" das caudas e o grau de agudez
 Rever valor maximo e minimo de voltagem considerada normal. nao sei se ta correto 
 https://energies.vialis.net/sites/default/files/domain_vialis_energies/pdf/dimensionnement.pdf, fonte para a cena dos volts 
 **Devemos eliminar ou não a variável tensão? Por redundância**
+
+
+Ideia pergunta: é possível prever períodos de baixo consumo (tentar reconhecer)
