@@ -89,18 +89,55 @@ class AlarmeZ:
     """Alarme de anomalias: z-score da leitura face à janela ANTERIOR (sem a própria leitura).
 
     Dá alarme quando |z| > limiar, desde que a janela tenha pelo menos `min_leituras`.
+    `desvio_min` é um desvio-padrão mínimo (na unidade dos dados): numa janela quase
+    constante (casa vazia), o desvio é minúsculo e qualquer variação pequena daria um
+    z enorme; com o mínimo, isso deixa de acontecer.
     """
 
-    def __init__(self, minutos=60, limiar=3.0, min_leituras=30):
+    def __init__(self, minutos=60, limiar=3.0, min_leituras=30, desvio_min=0.0):
         self.janela = JanelaDeslizante(minutos)
         self.limiar = limiar
         self.min_leituras = min_leituras
+        self.desvio_min = desvio_min
 
     def atualizar(self, t, x):
         """Devolve (z, alarme) para a leitura x e só depois a junta à janela."""
         z, alarme = float("nan"), False
-        if self.janela.n >= self.min_leituras and self.janela.desvio > 0:
-            z = (x - self.janela.media) / self.janela.desvio
-            alarme = abs(z) > self.limiar
+        if self.janela.n >= self.min_leituras:
+            desvio = max(self.janela.desvio, self.desvio_min)
+            if desvio > 0:
+                z = (x - self.janela.media) / desvio
+                alarme = abs(z) > self.limiar
         self.janela.atualizar(t, x)
         return z, alarme
+
+
+class Agregador:
+    """Junta as leituras em períodos fixos (ex.: 15 min, 1 dia) à medida que chegam.
+
+    atualizar(t, x) devolve None enquanto o período está aberto e (início do período,
+    média, nº de leituras) quando chega a primeira leitura do período seguinte.
+    """
+
+    def __init__(self, freq="15min"):
+        self.passo = pd.Timedelta(freq).value          # duração do período em nanossegundos
+        self.atual = None
+        self.soma = 0.0
+        self.n = 0
+
+    def atualizar(self, t, x):
+        periodo = t.value // self.passo                  # nº do período a que a leitura pertence
+        fechado = None
+        if self.atual is not None and periodo != self.atual:
+            fechado = (pd.Timestamp(self.atual * self.passo), self.soma / self.n, self.n)
+            self.soma, self.n = 0.0, 0
+        self.atual = periodo
+        self.soma += x
+        self.n += 1
+        return fechado
+
+    def fechar(self):
+        """Devolve o último período (ainda aberto) no fim do fluxo."""
+        if self.n == 0:
+            return None
+        return (pd.Timestamp(self.atual * self.passo), self.soma / self.n, self.n)
