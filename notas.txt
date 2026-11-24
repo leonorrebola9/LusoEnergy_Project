@@ -32,4 +32,34 @@ https://energies.vialis.net/sites/default/files/domain_vialis_energies/pdf/dimen
 **Devemos eliminar ou não a variável tensão? Por redundância**
 
 
-Ideia pergunta: é possível prever períodos de baixo consumo (tentar reconhecer)
+Ideia pergunta: é possível prever períodos de baixo consumo (tentar reconhecer)´
+
+
+
+
+4.1: acompanhar o consumo sem guardar tudo
+
+São três formas de responder a "como está o consumo agora?", cada uma atualizada a cada leitura nova:
+
+Média global (Welford): a média de tudo desde o início. Diz "esta casa gasta em média 1 kW". Muda pouquíssimo, por isso serve 
+para conhecer a casa, não para vigiar o momento.
+Janela de 60 minutos: a média da última hora. Diz "na última hora gastou-se 1,4 kW".
+EWMA: uma média em que as leituras recentes contam mais e as antigas vão perdendo peso aos poucos. Reage depressa a mudanças.
+
+O gráfico compara as três num dia concreto, para se ver como cada uma reage. A verificação com o pandas serve para provar 
+que as contas feitas leitura a leitura dão o mesmo resultado que as contas feitas com todos os dados de uma vez.
+
+4.2: dar o alerta quando algo muda
+
+A sala de controlo quer ser avisada de duas coisas diferentes:
+
+1. Mudanças de comportamento que duram (drift): o ADWIN. O "normal" da casa mudou. Por exemplo, chegou o inverno e a casa 
+passou a gastar mais todos os dias, ou a família foi de férias e a casa deixou de consumir. O ADWIN compara o passado recente 
+com o passado mais antigo e avisa quando ficam diferentes. Encontrou 4 mudanças: as férias de agosto de 2008, duas subidas de 
+outono e uma descida de verão. Depois verificámos quais são sazonais (acontecem todos os anos) e quais são estruturais 
+(uma mudança nova, que fica).
+
+2. Momentos estranhos e pontuais (anomalias): o alarme com z-score. Uma leitura que foge muito do que se esperava naquele 
+momento. Por exemplo, consumo a meio das férias, numa casa que devia estar vazia. O alarme compara cada valor com a média
+das últimas horas. Se estiver muito acima (|z| maior que o limiar), dá alarme. Testámos várias configurações, vimos 5 alarmes 
+um a um para ver se eram reais ou falsos, e no fim recomendámos à sala de controlo qual configuração usar.
