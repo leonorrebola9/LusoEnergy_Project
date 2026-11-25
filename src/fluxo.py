@@ -141,3 +141,35 @@ class Agregador:
         if self.n == 0:
             return None
         return (pd.Timestamp(self.atual * self.passo), self.soma / self.n, self.n)
+
+
+class RegressaoOnline:
+    """Reta y = a + b·x por mínimos quadrados, atualizada a cada par (x, y) que chega.
+
+    Guarda só cinco somas (n, Σx, Σy, Σx², Σxy), por isso cada atualização tem custo constante.
+    """
+
+    def __init__(self):
+        self.n = 0
+        self.sx = self.sy = self.sxx = self.sxy = 0.0
+
+    def atualizar(self, x, y):
+        self.n += 1
+        self.sx += x
+        self.sy += y
+        self.sxx += x * x
+        self.sxy += x * y
+
+    @property
+    def b(self):
+        """Declive: quanto muda y por cada unidade de x."""
+        den = self.n * self.sxx - self.sx ** 2
+        return (self.n * self.sxy - self.sx * self.sy) / den if den else 0.0
+
+    @property
+    def a(self):
+        """Ordenada na origem."""
+        return (self.sy - self.b * self.sx) / self.n if self.n else float("nan")
+
+    def prever(self, x):
+        return self.a + self.b * x
