@@ -35,6 +35,10 @@ https://energies.vialis.net/sites/default/files/domain_vialis_energies/pdf/dimen
 Ideia pergunta: é possível prever períodos de baixo consumo (tentar reconhecer)´
 
 
+parte 3
+Tenho que ver a cena dos dias, porque supostamente à dias validos que nao sao validos
+
+
 
 
 4.1: acompanhar o consumo sem guardar tudo
